@@ -19,6 +19,8 @@ from funsearch import logging_stats
 def get_model_provider(model_name):
     if model_name.lower() == "mock_model":
         return "mock_model"
+    elif "qianfan" in model_name.lower(): # qianfan is a cloud provider
+        return "qianfan"
     elif "/" in model_name.lower():
         return "openrouter"
     elif "codestral" in model_name.lower() or "mistral" in model_name.lower():
@@ -37,7 +39,7 @@ def get_model_provider(model_name):
 class LLMModel:
     def __init__(
         self, 
-        model_name="codestral-latest", 
+        model_name="qianfan/deepseek-v3",
         top_p=0.9, 
         temperature=0.7, 
         keynum=0, 
@@ -76,6 +78,8 @@ class LLMModel:
             self.client = genai.GenerativeModel(model_name,system_instruction=self.system_prompt)
         elif self.provider == "deepinfra":
             self.client = openai.AsyncOpenAI(api_key=self.key,base_url="https://api.deepinfra.com/v1/openai/")
+        elif self.provider == 'qianfan' :
+            self.client = openai.AsyncOpenAI(api_key=self.key,base_url="https://qianfan.baidubce.com/v2")
         elif self.provider == "openrouter":
             self.client = openai.AsyncOpenAI(api_key=self.key,base_url="https://openrouter.ai/api/v1")
             self.data_request = openai.AsyncOpenAI(api_key=self.key,base_url="https://openrouter.ai/api/v1/generation")
@@ -192,9 +196,9 @@ class LLMModel:
                     prompt=prompt_text,
                     response=chat_response
                 )
-        elif self.provider in ["openai", "deepinfra", "openrouter"]:
+        elif self.provider in ["openai", "deepinfra", "openrouter", "qianfan"]:
             response = await self.client.chat.completions.create(
-                model=self.model,
+                model=self.model if self.provider != "qianfan" else self.model.split("/")[-1], # qianfan model name is different from openai
                 messages=[
                     { "role": "system", "content": self.system_prompt },
                     { "role": "user", "content": prompt_text },
@@ -300,4 +304,3 @@ class LLMModel:
                     logging.debug(f"prompt:awoke:{self.model}:{self.id}:{self.counter}:{attempt}:{end-start:.3f}")
         logging.error(f"prompt:error-fatal:{self.model}:{self.id}:{self.counter}:{attempt}:{max_retries} attempts failed")
         return None, None  # If we've exhausted all retries
-

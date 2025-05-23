@@ -1,0 +1,1 @@
+funsearch runasync /workspace/examples/kernel_search.py 100 --sandbox ExternalProcessSandbox --samplers 20 --islands 10 --duration 3000 --name jianmin-woo --tag funsearch-mm-ks --token_limit 1000000 --relative_cost_of_input_tokens 0.5

@@ -1,0 +1,1 @@
+funsearch runasync examples/cap_set_spec.py 8 --sandbox ExternalProcessSandbox --samplers 20 --islands 10 --duration 3000 --name jianmin-woo --tag funsearch-cap --token_limit 1000000 --relative_cost_of_input_tokens 0.5

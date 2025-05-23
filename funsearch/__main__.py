@@ -61,7 +61,7 @@ def main(ctx):
 @main.command()
 @click.argument("spec_file", type=click.File("r"))
 @click.argument('inputs')
-@click.option('--model', default="mistral/codestral-latest", help='LLM model (or comma-separated list of models or model:count entries)')
+@click.option('--model', default="qianfan/deepseek-v3", help='LLM model (or comma-separated list of models or model:count entries)')
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='Path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
 @click.option('--iterations', default=-1, type=click.INT, help='Max iterations per sampler')

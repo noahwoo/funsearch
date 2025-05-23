@@ -27,6 +27,8 @@ RUN mkdir -p ./data && \
 # Copy application code
 COPY examples ./examples
 COPY funsearch ./funsearch
+COPY run-cap-docker.sh ./run-cap-docker.sh
+COPY run-mm-ks-docker.sh ./run-mm-ks-docker.sh
 
 # Install the application
 RUN if [ "$USE_UV" = "true" ]; then \
