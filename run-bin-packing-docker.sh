@@ -1,0 +1,1 @@
+funsearch runasync /workspace/examples/bin_packing.py OR3 --sandbox ExternalProcessSandbox --samplers 20 --islands 10 --duration 30000 --name jianmin-woo --tag funsearch-bin-packing --token_limit 1000000 --relative_cost_of_input_tokens 0.5
