@@ -25,10 +25,12 @@ RUN mkdir -p ./data && \
     cd ..
 
 # Copy application code
-COPY examples ./examples
-COPY funsearch ./funsearch
+COPY examples/ ./examples
+RUN ls --recursive ./examples
+COPY funsearch/ ./funsearch
 COPY run-cap-docker.sh ./run-cap-docker.sh
 COPY run-mm-ks-docker.sh ./run-mm-ks-docker.sh
+COPY run-bin-packing-docker.sh ./run-bin-packing-docker.sh
 
 # Install the application
 RUN if [ "$USE_UV" = "true" ]; then \

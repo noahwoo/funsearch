@@ -50,7 +50,7 @@ class LLM:
     usage_stats.time_to_response = end-start
     usage_stats.time_of_response = end
     if label is not None:
-        #self._log(usage_stats, self.prompt_count, label)
+        self._log(prompt, response, usage_stats, self.prompt_count, label)
         logging.debug("sample:%s:%d:%d:%d:%d:%.3f:%.3f:%.3f:%.3f"%(self.model.model,label,self.prompt_count,len(prompt),len(response),start,end,end-start,usage_stats.total_tokens))
     self.prompt_count += 1
     return response, usage_stats
@@ -59,20 +59,20 @@ class LLM:
     """Returns multiple predicted continuations of `prompt`."""
     return [await self._draw_sample(prompt, label) for _ in range(self._samples_per_prompt)]
 
-  # def _log(self, prompt: str, response: str, index: int, label: int):
-  #   model_name_replaced = self.model.model.replace("/", "_")
-  #   name_for_log = f"{model_name_replaced}_{label}_{index}.log"
-  #   if self.log_path is not None:
-  #     with open(self.log_path / name_for_log, "a") as f:
-  #       f.write("=== PROMPT ===\n")
-  #       f.write(prompt)
-  #       f.write("\n=== RESPONSE ===\n")
-  #       f.write(str(response))
-  #       f.write("\n================\n")
-  #       f.write(f"Total tokens: {usage_stats.total_tokens}\n")
-  #       f.write(f"Prompt tokens: {usage_stats.tokens_prompt}\n")
-  #       f.write(f"Completion tokens: {usage_stats.tokens_completion}\n")
-  #       f.write(f"Model: {self.model.model}\n")
+  def _log(self, prompt: str, response: str, usage_stats, index: int, label: int):
+    model_name_replaced = self.model.model.replace("/", "_")
+    name_for_log = f"{model_name_replaced}_{label}_{index}.log"
+    if self.log_path is not None:
+      with open(self.log_path / name_for_log, "a") as f:
+        f.write("=== PROMPT ===\n")
+        f.write(prompt)
+        f.write("\n=== RESPONSE ===\n")
+        f.write(str(response))
+        f.write("\n================\n")
+        f.write(f"Total tokens: {usage_stats.total_tokens}\n")
+        f.write(f"Prompt tokens: {usage_stats.tokens_prompt}\n")
+        f.write(f"Completion tokens: {usage_stats.tokens_completion}\n")
+        f.write(f"Model: {self.model.model}\n")
 
 
 class Sampler:
